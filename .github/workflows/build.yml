@@ -96,7 +96,7 @@ jobs:
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
           containers: ${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/wolfyreload/bazzite-wolfyreload/main/cosign.pub
+          pubkey: https://raw.githubusercontent.com/ublue-os/bazzite/main/cosign.pub
           registry: ${{ env.IMAGE_REGISTRY }}
 
       - name: Verify akmods image
