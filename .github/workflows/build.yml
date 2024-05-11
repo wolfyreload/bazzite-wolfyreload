@@ -1,7 +1,7 @@
 name: Build Bazzite
 on:
   schedule:
-    - cron: '40 16 * * 2,5' # 16:40 utc tues thurs
+    - cron: '40 9 * * 5' # 09:40 UTC (11:40 SAST) Thurs 
   pull_request:
     branches:
       - testing
