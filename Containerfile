@@ -810,7 +810,7 @@ RUN sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && 
 RUN rpm-ostree install \ 
         virt-manager \
         edk2-ovmf \
-        qemu &&
+        qemu && \
     rpm-ostree kargs \
         --append-if-missing="kvm.ignore_msrs=1" \
         --append-if-missing="kvm.report_ignored_msrs=0"
