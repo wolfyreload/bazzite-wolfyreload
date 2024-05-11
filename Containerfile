@@ -804,6 +804,16 @@ RUN sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && 
     IMAGE_NAME="${BASE_IMAGE_NAME}" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh && \
     ostree container commit
 
+# Enable virtualisation by default
+RUN rpm-ostree install \ 
+        virt-manager \
+        edk2-ovmf \
+        qemu &&
+    rpm-ostree kargs \
+        --append-if-missing="kvm.ignore_msrs=1" \
+        --append-if-missing="kvm.report_ignored_msrs=0"
+    ostree container commit
+
 # Cleanup & Finalize
 RUN /usr/libexec/containerbuild/build-initramfs && \
     /usr/libexec/containerbuild/image-info && \
