@@ -813,7 +813,7 @@ RUN rpm-ostree install \
         qemu && \
     rpm-ostree kargs \
         --append-if-missing="kvm.ignore_msrs=1" \
-        --append-if-missing="kvm.report_ignored_msrs=0"
+        --append-if-missing="kvm.report_ignored_msrs=0" && \
     ostree container commit
 
 # Cleanup & Finalize
