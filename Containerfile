@@ -783,7 +783,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 # Fetch NVIDIA driver
 COPY system_files/nvidia/shared system_files/nvidia/${BASE_IMAGE_NAME} /
 
-# Remove everything that doesn't work well with NVIDIA
+# Remove everything that doesnt work well with NVIDIA
 RUN rpm-ostree override remove \
         rocm-hip \
         rocm-opencl \
@@ -811,9 +811,6 @@ RUN rpm-ostree install \
         virt-manager \
         edk2-ovmf \
         qemu && \
-    rpm-ostree kargs \
-        --append-if-missing="kvm.ignore_msrs=1" \
-        --append-if-missing="kvm.report_ignored_msrs=0" && \
     ostree container commit
 
 # Cleanup & Finalize
