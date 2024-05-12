@@ -845,6 +845,13 @@ RUN wget https://copr.fedorainfracloud.org/coprs/gloriouseggroll/nvidia-explicit
         || true && \
     ostree container commit
 
+# Enable virtualisation by default
+RUN rpm-ostree install \ 
+        virt-manager \
+        edk2-ovmf \
+        qemu && \
+    ostree container commit
+
 # Cleanup & Finalize
 RUN wget https://raw.githubusercontent.com/ublue-os/bazzite/main/scripts/initramfs.sh -O /tmp/initramfs.sh && \
     chmod +x /tmp/initramfs.sh && \
