@@ -812,6 +812,7 @@ RUN rpm-ostree install \
         virt-manager \
         edk2-ovmf \
         qemu && \
+        gparted && \
     ostree container commit
 
 # Cleanup & Finalize
