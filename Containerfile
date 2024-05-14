@@ -811,7 +811,7 @@ RUN sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && 
 RUN rpm-ostree install \ 
         virt-manager \
         edk2-ovmf \
-        qemu && \
+        qemu \
         gparted && \
     ostree container commit
 
