@@ -812,6 +812,8 @@ RUN rpm-ostree install \
         virt-manager \
         edk2-ovmf \
         qemu \
+        grub-customizer \
+        sunshine \
         gparted && \
     ostree container commit
 
