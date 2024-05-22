@@ -1,7 +1,7 @@
 name: Build Bazzite
 on:
   schedule:
-    - cron: '40 16 * * 2,5' # 16:40 utc tues thurs
+    - cron: '40 9 * * 5' # 09:40 UTC (11:40 SAST) Thurs 
   pull_request:
     branches:
       - testing
@@ -30,7 +30,8 @@ on:
   merge_group:
   workflow_dispatch:
 env:
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY: ghcr.io/ublue-os
+  WOLFY_IMAGE_REGISTRY: ghcr.io/wolfyreload
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -49,9 +50,9 @@ jobs:
       fail-fast: false
       matrix:
         base_image_flavor: [main]
-        base_name: [bazzite, bazzite-deck, bazzite-nvidia]
-        base_image_name: [kinoite, silverblue]
-        target_image_flavor: [main, asus]
+        base_name: [bazzite-nvidia]
+        base_image_name: [kinoite]
+        target_image_flavor: [main]
         fedora_version: [40]
         include:
           - fedora_version: 40
@@ -96,7 +97,7 @@ jobs:
         uses: EyeCantCU/cosign-action/verify@v0.2.2
         with:
           containers: ${{ matrix.base_image_name }}-${{ matrix.base_image_flavor }}:${{ matrix.fedora_version }}
-          pubkey: https://raw.githubusercontent.com/ublue-os/${{ matrix.base_image_flavor }}/main/cosign.pub
+          pubkey: https://raw.githubusercontent.com/ublue-os/bazzite/main/cosign.pub
           registry: ${{ env.IMAGE_REGISTRY }}
 
       - name: Verify akmods image
@@ -256,14 +257,14 @@ jobs:
           extra-args: |
             --target=${{ matrix.base_name }}
 
-      - name: Sign kernel
-        uses: EyeCantCU/kernel-signer@v0.2.1
-        with:
-          image: ${{ steps.build_image.outputs.image }}
-          default-tag: ${{ env.DEFAULT_TAG }}
-          privkey: ${{ secrets.AKMOD_PRIVKEY_20230518 }}
-          pubkey: /etc/pki/akmods/certs/akmods-ublue.der
-          tags: ${{ steps.build_image.outputs.tags }}
+      # - name: Sign kernel
+      #   uses: EyeCantCU/kernel-signer@v0.2.1
+      #   with:
+      #     image: ${{ steps.build_image.outputs.image }}
+      #     default-tag: ${{ env.DEFAULT_TAG }}
+      #     privkey: ${{ secrets.AKMOD_PRIVKEY_20230518 }}
+      #     pubkey: /etc/pki/akmods/certs/akmods-ublue.der
+      #     tags: ${{ steps.build_image.outputs.tags }}
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
@@ -271,7 +272,7 @@ jobs:
         id: registry_case
         uses: ASzc/change-string-case-action@v6
         with:
-          string: ${{ env.IMAGE_REGISTRY }}
+          string: ${{ env.WOLFY_IMAGE_REGISTRY }}
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
@@ -294,25 +295,25 @@ jobs:
             extra-args: |
               --disable-content-trust
 
-      - name: Sign container image
-        uses: EyeCantCU/cosign-action/sign@v0.2.2
-        if: github.event_name != 'pull_request'
-        with:
-          containers: ${{ env.IMAGE_NAME }}
-          registry-token: ${{ secrets.GITHUB_TOKEN }}
-          signing-secret: ${{ secrets.SIGNING_SECRET }}
-          tags: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
+      # - name: Sign container image
+      #   uses: EyeCantCU/cosign-action/sign@v0.2.2
+      #   if: github.event_name != 'pull_request'
+      #   with:
+      #     containers: ${{ env.IMAGE_NAME }}
+      #     registry-token: ${{ secrets.ACCESS_TOKEN }}
+      #     signing-secret: ${{ secrets.SIGNING_SECRET }}
+      #     tags: ${{ steps.push.outputs.outputs && fromJSON(steps.push.outputs.outputs).digest }}
 
       - name: Echo outputs
         if: github.event_name != 'pull_request'
         run: |
           echo "${{ toJSON(steps.push.outputs) }}"
 
-  build_iso:
-    name: build iso
-    needs: [push-ghcr]
-    if: github.ref_name == 'testing'
-    # Eventually would be nice for building images in PRs
-    #if: ${{ endsWith(github.event.pull_request.title, '[ISO]') }}
-    uses: ./.github/workflows/build_iso.yml
-    secrets: inherit
+  # build_iso:
+  #   name: build iso
+  #   needs: [push-ghcr]
+  #   if: github.ref_name == 'testing'
+  #   # Eventually would be nice for building images in PRs
+  #   #if: ${{ endsWith(github.event.pull_request.title, '[ISO]') }}
+  #   uses: ./.github/workflows/build_iso.yml
+  #   secrets: inherit
