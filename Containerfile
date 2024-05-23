@@ -797,7 +797,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 # Fetch NVIDIA driver
 COPY system_files/nvidia/shared system_files/nvidia/${BASE_IMAGE_NAME} /
 
-# Remove everything that doesn't work well with NVIDIA
+# Remove everything that doesnt work well with NVIDIA
 RUN rpm-ostree override remove \
         rocm-hip \
         rocm-opencl \
@@ -811,24 +811,19 @@ RUN rpm-ostree override remove \
     ostree container commit
 
 # Install NVIDIA driver
-COPY --from=nvidia-akmods /rpms /tmp/akmods-rpms
-RUN sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && \
-    sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo && \
-    sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo && \
-    curl -Lo /tmp/nvidia-install.sh https://raw.githubusercontent.com/ublue-os/hwe/main/nvidia-install.sh && \
-    chmod +x /tmp/nvidia-install.sh && \
-    IMAGE_NAME="${BASE_IMAGE_NAME}" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh && \
+RUN curl -Lo /etc/yum.repos.d/negativo17-fedora-nvidia.repo https://negativo17.org/repos/fedora-nvidia.repo && \
+    rpm-ostree install akmod nvidia nvidia-driver nvidia-driver-libs.i686 && \
     ostree container commit
 
 # Enable virtualisation by default
-RUN rpm-ostree install \ 
-        virt-manager \
-        edk2-ovmf \
-        qemu \
-        grub-customizer \
-        sunshine \
-        gparted && \
-    ostree container commit
+# RUN rpm-ostree install \ 
+#         virt-manager \
+#         edk2-ovmf \
+#         qemu \
+#         grub-customizer \
+#         sunshine \
+#         gparted && \
+#     ostree container commit
 
 # Cleanup & Finalize
 RUN /usr/libexec/containerbuild/build-initramfs && \
