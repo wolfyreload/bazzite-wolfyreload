@@ -784,15 +784,15 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 #     ostree container commit
 
 # FROM ghcr.io/ublue-os/akmods-nvidia:${KERNEL_FLAVOR}-${FEDORA_MAJOR_VERSION} as nvidia-akmods
-# FROM bazzite as bazzite-nvidia
+FROM bazzite as bazzite-nvidia
 
-# ARG IMAGE_NAME="${IMAGE_NAME:-bazzite-nvidia}"
-# ARG IMAGE_VENDOR="${IMAGE_VENDOR:-ublue-os}"
-# ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-nvidia}"
-# ARG KERNEL_FLAVOR="${KERNEL_FLAVOR:-fsync}"
-# ARG IMAGE_BRANCH="${IMAGE_BRANCH:-main}"
-# ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-kinoite}"
-# ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
+ARG IMAGE_NAME="${IMAGE_NAME:-bazzite-nvidia}"
+ARG IMAGE_VENDOR="${IMAGE_VENDOR:-ublue-os}"
+ARG IMAGE_FLAVOR="${IMAGE_FLAVOR:-nvidia}"
+ARG KERNEL_FLAVOR="${KERNEL_FLAVOR:-fsync}"
+ARG IMAGE_BRANCH="${IMAGE_BRANCH:-main}"
+ARG BASE_IMAGE_NAME="${BASE_IMAGE_NAME:-kinoite}"
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 
 # # Fetch NVIDIA driver
 # COPY system_files/nvidia/shared system_files/nvidia/${BASE_IMAGE_NAME} /
