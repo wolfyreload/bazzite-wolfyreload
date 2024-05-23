@@ -812,7 +812,7 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 
 # Install NVIDIA driver
 RUN curl -Lo /etc/yum.repos.d/negativo17-fedora-nvidia.repo https://negativo17.org/repos/fedora-nvidia.repo && \
-    rpm-ostree install akmod nvidia nvidia-driver nvidia-driver-libs.i686 && \
+    rpm-ostree install nvidia-driver nvidia-driver-libs.i686 && \
     ostree container commit
 
 # Enable virtualisation by default
