@@ -545,9 +545,9 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION:-40}"
 #     ostree container commit
 
 # # Cleanup & Finalize
-COPY system_files/overrides /
-RUN /usr/libexec/containerbuild/build-initramfs && \
-    /usr/libexec/containerbuild/image-info && \
+# COPY system_files/overrides /
+# RUN /usr/libexec/containerbuild/build-initramfs && \
+#     /usr/libexec/containerbuild/image-info && \
 #     rm -f /etc/profile.d/toolbox.sh && \
 #     sed -i 's@/usr/bin/steam@/usr/bin/bazzite-steam@g' /usr/share/applications/steam.desktop && \
 #     sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/fish.desktop && \
@@ -637,7 +637,7 @@ RUN /usr/libexec/containerbuild/build-initramfs && \
 #     systemctl disable waydroid-container.service && \
 #     curl -Lo /usr/bin/waydroid-choose-gpu https://raw.githubusercontent.com/KyleGospo/waydroid-scripts/main/waydroid-choose-gpu.sh && \
 #     chmod +x /usr/bin/waydroid-choose-gpu && \
-    ostree container commit
+#     ostree container commit
 
 # FROM bazzite as bazzite-deck
 
@@ -826,11 +826,11 @@ RUN curl -Lo /etc/yum.repos.d/negativo17-fedora-nvidia.repo https://negativo17.o
 #     ostree container commit
 
 # Cleanup & Finalize
-RUN /usr/libexec/containerbuild/build-initramfs && \
-    /usr/libexec/containerbuild/image-info && \
-    rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json && \
-    echo "import \"/usr/share/ublue-os/just/95-bazzite-nvidia.just\"" >> /usr/share/ublue-os/justfile && \
-    sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && \
-    sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo && \
-    sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo && \
-    ostree container commit
+# RUN /usr/libexec/containerbuild/build-initramfs && \
+#     /usr/libexec/containerbuild/image-info && \
+#     rm -f /usr/share/vulkan/icd.d/nouveau_icd.*.json && \
+#     echo "import \"/usr/share/ublue-os/just/95-bazzite-nvidia.just\"" >> /usr/share/ublue-os/justfile && \
+#     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && \
+#     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo && \
+#     sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo && \
+#     ostree container commit
