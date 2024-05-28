@@ -819,6 +819,15 @@ RUN sed -i 's@enabled=0@enabled=1@g' /etc/yum.repos.d/rpmfusion-nonfree.repo && 
     IMAGE_NAME="${BASE_IMAGE_NAME}" RPMFUSION_MIRROR="" /tmp/nvidia-install.sh && \
     ostree container commit
 
+# Enable virtualisation by default
+RUN rpm-ostree install \ 
+        virt-manager \
+        edk2-ovmf \
+        qemu \
+        gparted && \
+        gnome-disk-utility && \
+    ostree container commit
+
 # Cleanup & Finalize
 RUN /usr/libexec/containerbuild/build-initramfs && \
     /usr/libexec/containerbuild/image-info && \
