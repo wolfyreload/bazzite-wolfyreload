@@ -4,6 +4,5 @@
 setup-boot-windows-steam:
     echo "Making efibootmgr -n accessible without sudo"
     echo "%wheel ALL=(root) NOPASSWD: /usr/sbin/efibootmgr" | sudo tee /etc/sudoers.d/efibootmgr-config
-
     echo "Adding /usr/bin/boot-windows as a Non-steam game"
     /usr/bin/steamos-add-to-steam /usr/bin/boot-windows
